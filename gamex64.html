@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+  body {
+    background: #f0f8ff;
+    font-family: sans-serif;
+  }
+
+  .menu {
+    width: 400px;
+    margin: 40px auto;
+  }
+
+  .game-btn {
+    display: block;
+    width: 100%;
+    padding: 18px 24px;
+    margin: 12px 0;
+    background: linear-gradient(90deg, #4fc3f7, #0288d1);
+    color: white;
+    font-size: 20px;
+    border-radius: 10px;
+    text-align: left;
+    cursor: pointer;
+    border: none;
+    transition: 0.2s;
+    letter-spacing: 1px;
+  }
+
+  .game-btn:hover {
+    background: linear-gradient(90deg, #81d4fa, #03a9f4);
+    transform: translateX(4px);
+  }
+</style>
+</head>
+
+<body>
+  <div class="menu">
+    <button class="game-btn" onclick="location.href='空想幼女/空想幼女.html'">
+  空想幼女
+</button>
+<button class="game-btn" onclick="location.href='オセロ.html'">
+  オセロ
+</button>
+<button class="game-btn" onclick="location.href='.html'">
+  未定
+</button>
+  </div>
+
+<script>
+function selectGame(type) {
+  alert(type + " を選択しました！");
+}
+</script>
+</body>
+</html>

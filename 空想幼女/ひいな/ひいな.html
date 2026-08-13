@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+  body {
+    background: #f0f8ff;
+    font-family: sans-serif;
+  }
+
+  /* 画像表示エリア */
+  #imgArea {
+    width: 320px;
+    height: 530px;
+    margin: 20px auto;
+    background: #ddd;
+    border-radius: 10px;
+    overflow: hidden;
+  }
+
+  #imgArea img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  #textArea {
+  width: 300px;
+  margin: 10px auto;
+  background: #ffffff;
+  padding: 10px;
+  border-radius: 10px;
+  font-size: 16px;
+}
+
+  .menu {
+    width: 400px;
+    margin: 40px auto;
+  }
+
+  .game-btn {
+    display: block;
+    width: 100%;
+    padding: 18px 24px;
+    margin: 12px 0;
+    background: linear-gradient(90deg, #4fc3f7, #0288d1);
+    color: white;
+    font-size: 20px;
+    border-radius: 10px;
+    text-align: left;
+    cursor: pointer;
+    border: none;
+    transition: 0.2s;
+    letter-spacing: 1px;
+  }
+
+  .game-btn:hover {
+    background: linear-gradient(90deg, #81d4fa, #03a9f4);
+    transform: translateX(4px);
+  }
+</style>
+</head>
+
+<div id="imgArea">
+  <img id="mainImg" src="img/default.png">
+</div>
+
+<div id="textArea">
+  <p id="mainText">ねぇ、どうしたの？</p>
+</div>
+
+<div id="nextArea"></div>
+
+<body>
+  <div class="menu" id="menuArea">
+  <button class="game-btn" onclick="selectOption(1)">1</button>
+  <button class="game-btn" onclick="selectOption(2)">2</button>
+  <button class="game-btn" onclick="selectOption(3)">3</button>
+</div>
+
+<script>
+// d1-1
+const options = {
+  "default1": {
+    1.0: { img: "img/0-1.png", text: "こんにちは", next: ["いい天気ですね","何歳？","結婚歴は？"] }
+  },
+
+  // d1-2
+  "いい天気ですね": {
+    1.0: { img: "img/1-1.png", text: "そうだね", next: ["何してたの？","お家は？","好きな色は？"] }
+  },
+  "何歳？": {
+    1.0: { img: "img/1-2.png", text: "4歳...君は？", next: ["同い年","若者","30歳以上"] }
+  },
+  "結婚歴は？": {
+    1.0: { img: "img/1-3.png", text: "い、いやです。あなた、変です", next: ["待って警察はやめて","噓だよ、彼女との会話の癖で","ごめんなさい"] }
+  },
+
+  // d1-3
+  "何してたの？": {
+    1.0: { img: "img/1-4.png", text: "幼稚園の帰り道...", next: ["いや、あいさつのつもりで...","遊ばない？","名前は？"] }
+  },
+  "お家は？": {
+    1.0: { img: "img/1-5.png", text: "お母さんが言わないでって...", next: ["付いてくよ","教えろ","何で？"] }
+  },
+  "好きな色は？": {
+    1.0: { img: "img/1-6.png", text: "ピンクだよ", next: ["そうなんだ","僕と違う","同じだね"] }
+  },
+
+  // d1-4
+  "いや、あいさつのつもりで...": {
+    1.0: { img: "img/1-.png", text: "あいさつ？お話してたよ", next: ["そうだけど","ごめんお話長かったね","じゃぁまたね"] }
+  },
+  "遊ばない？": {
+    1.0: { img: "img/1-.png", text: "え？遊ばない。怖い", next: ["待って警察はやめて","ごめん"] }
+  },
+  "名前は？": {
+    1.0: { img: "img/1-.png", text: "ひいなです", next: ["仲良くして","名前聞いちゃった～","へぇーそうなんだ"] }
+  },
+
+  // d1-5
+  "そうだけど": {
+    1.0: { img: "img/1-.png", text: "じゃぁ何か用ですか？", next: ["いや～","はい","違います"] }
+  },
+  "ごめんお話長かったね": {
+    1.0: { img: "img/1-.png", text: "お話したいんですか？", next: ["はい","そういう趣味です"] }
+  },
+  "じゃぁまたね": {
+    1.0: { img: "img/1-.png", text: "またね", next: ["僕はバスに乗った"] }
+  },
+
+  // d1-6
+  "いや～": {
+    1.0: { img: "img/1-.png", text: "嫌です。さよなら", next: ["僕はほっと一安心する"] }
+  },
+  "はい": {
+    1.0: { img: "img/1-.png", text: "何ですか？", next: ["お母さんは今どこに？","トイレはどこですか？","はい～"] }
+  },
+  "違います": {
+    1.0: { img: "img/1-.png", text: "違う？では、さよなら", next: ["僕は手を振って見送った"] }
+  },
+
+  // d1-7
+  "お母さんは今どこに？": {
+    1.0: { img: "img/1-.png", text: "お母さんはお仕事です", next: ["え？いないの！！","はい "] }
+  },
+  "トイレはどこですか？": {
+    1.0: { img: "img/1-.png", text: "トイレは向こうです", next: ["ありがとう","道案内してよ"] }
+  },
+  "はい～": {
+    1.0: { img: "img/1-.png", text: "嫌、変な人", next: ["逃げられてしまった"] }
+  },
+
+  // d1-8
+  "え？いないの！！": {
+    1.0: { img: "img/1-.png", text: "嬉しそう...ごめん帰る", next: ["逃げられてしまった"] }
+  },
+  "はい ": {
+    1.0: { img: "img/1-.png", text: "で、お母さんに何の用ですか？", next: ["あっいや","何でもないです"] }
+  },
+
+  // d1-9
+  "あっいや": {
+    1.0: { img: "img/1-.png", text: "変な人！さよなら", next: ["顔を合わせるのが難しくなった"] }
+  },
+  "何でもないです": {
+    1.0: { img: "img/1-.png", text: "お話おしまいでいい？さよなら", next: ["警戒されてしまった"] }
+  },
+
+  // d1-10
+  "ありがとう": {
+    1.0: { img: "img/1-.png", text: "どういたしまして", next: ["手を振ってトイレに急いだ"] }
+  },
+  "道案内してよ": {
+    1.0: { img: "img/1-.png", text: "こっちです", next: ["ありがとう ","怖いから来て"] }
+  },
+
+  // d1-11
+  "ありがとう ": {
+    1.0: { img: "img/1-.png", text: "どういたしまして", next: ["手を振ってトイレに駆け込んだ"] }
+  },
+  "怖いから来て": {
+    1.0: { img: "img/1-.png", text: "はい", next: ["彼女を個室に押し込む","後ろを向いて貰う"] }
+  },
+
+  // d1-12
+  "彼女を個室に押し込む": {
+    1.0: { img: "img/1-.png", text: "嫌です。そんなぁ", next: ["彼女を触る","そっとして置く"] }
+  },
+  "後ろを向いて貰う": {
+    1.0: { img: "img/1-.png", text: "終わりましたね。またね", next: ["手を洗った"] }
+  },
+
+  // d1-13
+  "彼女を触る": {
+    1.0: { img: "img/1-.png", text: "ひどいよぉ", next: ["パンツを降ろす","性器を出す"] }
+  },
+  "そっとして置く": {
+    1.0: { img: "img/1-.png", text: "...", next: ["この後誤った"] }
+  },
+
+  // d1-14
+  "パンツを降ろす": {
+    1.0: { img: "img/1-.png", text: "助けてくださいー", next: ["トイレから逃げ出す","性器を触る"] }
+  },
+  "性器を出す": {
+    1.0: { img: "img/1-.png", text: "嫌です...", next: ["安心させる","手を引っ張って触らせる"] }
+  },
+
+  // d1-15
+  "トイレから逃げ出す": {
+    1.0: { img: "img/1-.png", text: "お母さ～ん。うわーん", next: ["後日警察が来た"] }
+  },
+  "性器を触る": {
+    1.0: { img: "img/1-.png", text: "嫌、やめて！！", next: ["手を止める","続ける"] }
+  },
+
+  // d1-16
+  "続ける": {
+    1.0: { img: "img/1-.png", text: "あっ、おしっこ", next: ["猛ダッシュして興奮する","スマホで撮影"] }
+  },
+  "手を止める": {
+    1.0: { img: "img/1-.png", text: "あ、さよなら", next: ["個室に警察が訪れる"] }
+  },
+
+  // d1-17
+  "猛ダッシュして興奮する": {
+    1.0: { img: "img/1-.png", text: "...", next: ["警察が話し掛ける"] }
+  },
+  "スマホで撮影": {
+    1.0: { img: "img/1-.png", text: "あ、お巡りさんだぁ", next: ["振り向けなかった..."] }
+  },
+
+  // d1-18
+  "安心させる": {
+    1.0: { img: "img/1-.png", text: "嫌、きらい", next: ["叫び声に警察がやって来る"] }
+  },
+  "手を引っ張って触らせる": {
+    1.0: { img: "img/1-.png", text: "おちんちん？", next: ["精液を出す","我慢する"] }
+  },
+
+  // d1-18
+  "精液を出す": {
+    1.0: { img: "img/1-.png", text: "嫌、汚い", next: ["警察に見つかって重い刑にされる"] }
+  },
+  "我慢する": {
+    1.0: { img: "img/1-.png", text: "あ、お巡りさんだぁ", next: ["同時に精液だす...気まずい"] }
+  },
+
+  // d2
+  "default2": {
+    1.0: { img: "img/0-2.png", text: "ん？そうなんだ", next: ["いや、本当だよ","そうだｙ...","うん"] }
+  },
+
+  // d3
+  "default3": {
+    1.0: { img: "img/0-3.png", text: "見てた？興味があるんですか？", next: ["いや、見えたから...","そういう趣味でした...","お願い、ケーキあげるから"] }
+  },
+
+  // d4
+  "待って警察はやめて": {
+    1.0: { img: "img/0-4-1.png", text: "いやだ、お母さんに言うからね...", next: ["そ、そんなぁ"] }
+  },
+};
+
+// ------------------------------
+// 選択肢を押したときの処理
+// ------------------------------
+function selectOption(group, num) {
+
+  const data = options[group][num];
+
+  // 画像変更
+  document.getElementById("mainImg").src = data.img;
+
+  // 文章変更
+  document.getElementById("mainText").textContent = data.text;
+
+  // 次のボタン生成
+  const area = document.getElementById("menuArea");
+  area.innerHTML = "";
+
+  data.next.forEach(nextGroup => {
+    const btn = document.createElement("button");
+    btn.className = "game-btn";
+    btn.textContent = nextGroup;
+    btn.onclick = () => selectOption(nextGroup, 1); // 次の階層の「1」を押した扱い
+    area.appendChild(btn);
+  });
+}
+
+// 最初の選択肢を表示
+function start() {
+  const area = document.getElementById("menuArea");
+  area.innerHTML = `
+    <button class="game-btn" onclick="selectOption('default1',1)">こんにちは</button>
+    <button class="game-btn" onclick="selectOption('default2',1)">いや、何でもないよ</button>
+    <button class="game-btn" onclick="selectOption('default3',1)">見てただけでね</button>
+  `;
+}
+
+start();
+</script>
+</body>
+</html>
